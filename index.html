@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F6F1E4">
+<title>آشیانہ | Aashiyana</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root { --bg:#F6F1E4; --surface:#FFFFFF; --soft:#EAF2DD; --line:#DCD3BA; --text:#23352A; --muted:#66756B; --accent:#3F7A3A; --on-accent:#FFFFFF; --warm:#C8693E; --gold:#E9B23B;
+  --urdu:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Noto Naskh Arabic',serif; --latin:'Nunito',system-ui,sans-serif; }
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; margin:0; background:var(--bg); }
+body { color:var(--text); font-family:var(--urdu); font-size:16px; line-height:2; overscroll-behavior:none; }
+button { font-family:inherit; color:inherit; cursor:pointer; }
+h1 { margin:0; font-size:30px; font-weight:600; line-height:1.9; }
+h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
+.en { direction:ltr; unicode-bidi:isolate; font-family:var(--latin); font-size:13px; line-height:1.5; color:var(--muted); display:block; text-align:start; }
+:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+#app { position:relative; max-width:520px; height:100%; margin:0 auto; background:var(--bg); display:flex; flex-direction:column; overflow:hidden; }
+#views { flex:1; min-height:0; position:relative; }
+.tab { position:absolute; inset:0; overflow-y:auto; padding:max(24px,env(safe-area-inset-top,0px)) 18px 24px; }
+.tab[hidden] { display:none; }
+.sub { font-size:14px; color:var(--muted); margin:0; line-height:2; }
+.search input { width:100%; min-height:46px; border-radius:14px; border:1px solid var(--line); background:var(--surface); font-family:var(--urdu); font-size:16px; padding:0 16px; color:var(--text); margin:8px 0; }
+.chips { display:flex; gap:8px; overflow-x:auto; padding:4px 0 8px; scrollbar-width:none; }
+.chips::-webkit-scrollbar { display:none; }
+.chip { flex:none; min-height:40px; padding:0 14px; border-radius:20px; border:1px solid var(--line); background:var(--surface); font-size:14px; line-height:1.4; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.chip .en { font-size:10px; text-align:center; }
+.chip[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.chip[aria-pressed="true"] .en { color:#DDEBD2; }
+.month { background:var(--soft); border-radius:18px; padding:8px 14px 12px; margin:8px 0; }
+.month b { font-size:15px; }
+.mchips { display:flex; gap:8px; overflow-x:auto; padding-top:4px; scrollbar-width:none; }
+.mchips button { flex:none; display:flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--line); border-radius:20px; min-height:40px; padding:0 12px 0 6px; font-size:14px; }
+.mchips svg { width:30px; height:30px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px; }
+.pcard { background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 8px 10px; text-align:center; display:flex; flex-direction:column; align-items:center; }
+.pcard svg { width:100%; max-width:130px; height:auto; }
+.pcard b { font-size:16px; font-weight:600; line-height:1.8; }
+.pcard .en { text-align:center; }
+.badge { display:inline-block; background:var(--soft); color:var(--accent); border-radius:10px; padding:0 10px; font-size:12px; line-height:1.9; margin-top:2px; }
+.rcard { display:flex; gap:12px; align-items:center; width:100%; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 12px; margin-top:10px; text-align:start; }
+.rcard svg { width:72px; height:72px; flex:none; border-radius:12px; }
+.rcard .m { flex:1; min-width:0; }
+.rcard b { font-size:17px; font-weight:600; line-height:1.9; display:block; }
+.rcard small { font-size:12px; color:var(--muted); line-height:1.9; }
+.scene { background:var(--surface); border:1px solid var(--line); border-radius:18px; margin-top:12px; overflow:hidden; }
+.scene > svg { width:100%; height:auto; display:block; }
+.scene .ct { padding:6px 16px 4px; }
+.scene b { font-size:18px; font-weight:600; }
+.idea { border-top:1px solid var(--line); padding:6px 16px; }
+.idea strong { font-size:15px; font-weight:600; }
+.idea p { margin:0; font-size:14px; line-height:2.1; }
+.idea .en { margin-bottom:4px; }
+#detail { position:absolute; inset:0; z-index:20; background:var(--bg); overflow-y:auto; padding:max(14px,env(safe-area-inset-top,0px)) 18px 28px; }
+#detail[hidden] { display:none; }
+.back { display:inline-flex; align-items:center; gap:6px; min-height:44px; background:none; border:none; font-size:15px; color:var(--muted); padding:0; }
+.hero { text-align:center; }
+.hero svg { width:min(200px,50vw); height:auto; }
+.hero h1 { font-size:26px; }
+.hero .en { text-align:center; font-size:15px; }
+.facts { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:2px 14px; margin-top:10px; }
+.fact { padding:6px 0; border-bottom:1px solid var(--line); font-size:15px; line-height:2.1; }
+.fact:last-child { border-bottom:none; }
+.fact small { color:var(--accent); font-weight:600; font-size:12px; display:block; line-height:1.6; }
+.btn { display:flex; align-items:center; justify-content:center; width:100%; min-height:50px; border:none; border-radius:14px; background:var(--accent); color:var(--on-accent); font-size:16px; font-weight:600; margin-top:12px; }
+.btn.ghost { background:var(--surface); color:var(--text); border:1px solid var(--line); }
+.btn:disabled { opacity:.55; }
+.tags { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+.warn { background:#FBE9DC; border-radius:12px; padding:4px 14px; margin-top:10px; font-size:14px; }
+.steps { list-style:none; padding:0; margin:0; }
+.steps li { display:flex; gap:12px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--line); }
+.steps li:last-child { border-bottom:none; }
+.steps input { width:26px; height:26px; flex:none; margin-top:8px; accent-color:var(--accent); }
+.steps p { margin:0; font-size:15px; line-height:2.1; }
+.steps li.done p { opacity:.5; text-decoration:line-through; }
+.list { padding:0; margin:0; list-style:none; font-size:15px; }
+.list li { padding:2px 0 2px 0; line-height:2; }
+.list li::before { content:'• '; color:var(--accent); }
+.gcard { background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 12px; margin-top:10px; display:flex; gap:12px; align-items:center; }
+.gcard svg { width:64px; height:64px; flex:none; }
+.gcard .m { flex:1; min-width:0; }
+.gcard .m b { font-size:16px; font-weight:600; display:block; line-height:1.9; }
+.gcard .due { font-size:13px; line-height:1.9; }
+.due.late { color:#B33A1E; font-weight:600; }
+.due.ok { color:var(--accent); }
+.gcard button { min-height:44px; padding:0 12px; border-radius:12px; border:none; background:var(--accent); color:#fff; font-size:14px; }
+.gcard .rm { background:none; color:var(--muted); border:1px solid var(--line); padding:0 10px; }
+.empty { text-align:center; color:var(--muted); padding:28px 0; font-size:15px; }
+.hint { font-size:13px; color:var(--muted); text-align:center; margin:10px 0 0; line-height:2.1; }
+#nav { display:flex; flex:none; background:var(--surface); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
+#nav button { flex:1; min-height:66px; border:none; background:none; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted); font-size:14px; line-height:1.6; }
+#nav button .en { font-size:10px; text-align:center; color:inherit; }
+#nav button[aria-selected="true"] { color:var(--accent); font-weight:600; }
+#toast { position:absolute; z-index:40; left:50%; bottom:90px; transform:translateX(-50%); max-width:calc(100% - 40px); background:var(--text); color:#fff; padding:6px 18px; border-radius:22px; font-size:14px; }
+#toast[hidden] { display:none; }
+#splash { position:absolute; inset:0; z-index:50; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; transition:opacity .5s; }
+#splash.gone { opacity:0; pointer-events:none; }
+#splash svg { width:130px; height:130px; }
+#splash h1 { font-size:52px; }
+#splash .latin { font-family:var(--latin); letter-spacing:5px; color:var(--accent); font-size:20px; font-weight:700; }
+#splash .tag { color:var(--muted); font-size:15px; }
+#splash .dev { direction:ltr; font-family:var(--latin); color:var(--muted); font-size:13px; margin-top:18px; }
+</style>
+</head>
+<body>
+<div id="app">
+<div id="views">
+  <section id="tab-plants" class="tab" aria-labelledby="h-plants">
+    <h1 id="h-plants">پودے <span class="en" style="display:inline">Plants</span></h1>
+    <p class="sub">گھر، بالکونی اور کچن کے لیے آسان پودے</p>
+    <div class="month" id="monthBox"></div>
+    <div class="search"><input id="plantSearch" type="search" placeholder="پودا تلاش کریں  Search plants" autocomplete="off"></div>
+    <div class="chips" id="plantFilters"></div>
+    <div class="grid" id="plantGrid"></div>
+  </section>
+  <section id="tab-decor" class="tab" aria-labelledby="h-decor" hidden>
+    <h1 id="h-decor">گھر کی سجاوٹ <span class="en" style="display:inline">Home decor</span></h1>
+    <p class="sub">ہر کمرے کے لیے سستے اور آسان خیالات</p>
+    <h2>کمرے کے حساب سے · <span class="en" style="display:inline">By room</span></h2>
+    <div id="roomList"></div>
+    <h2>خود بنائیں · <span class="en" style="display:inline">DIY projects</span></h2>
+    <div id="diyList"></div>
+  </section>
+  <section id="tab-hobby" class="tab" aria-labelledby="h-hobby" hidden>
+    <h1 id="h-hobby">مشاغل <span class="en" style="display:inline">Hobbies</span></h1>
+    <p class="sub">سیکھیں، بنائیں اور چاہیں تو کمائیں</p>
+    <div id="hobbyList"></div>
+  </section>
+  <section id="tab-mine" class="tab" aria-labelledby="h-mine" hidden>
+    <h1 id="h-mine">میرا باغ <span class="en" style="display:inline">My garden</span></h1>
+    <p class="sub">اپنے پودے شامل کریں اور پانی دینے کا حساب رکھیں</p>
+    <div id="mineList"></div>
+    <p class="hint">یہ ریکارڈ صرف آپ کے فون میں رہتا ہے۔</p>
+  </section>
+</div>
+
+<nav id="nav" role="tablist" aria-label="ایپ کے حصے">
+  <button role="tab" data-tab="plants" aria-selected="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12C12 7 8 5 4 5c0 5 3 7 8 7zM12 14c0-4 3-6 8-6 0 5-3 6-8 6z"/></svg>پودے<span class="en">Plants</span></button>
+  <button role="tab" data-tab="decor" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21v-7h6v7"/></svg>سجاوٹ<span class="en">Decor</span></button>
+  <button role="tab" data-tab="hobby" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>مشاغل<span class="en">Hobbies</span></button>
+  <button role="tab" data-tab="mine" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 01-12 0c0-5 6-11 6-11z"/></svg>میرا باغ<span class="en">My garden</span></button>
+</nav>
+
+<div id="detail" hidden></div>
+<div id="toast" hidden role="status"></div>
+<div id="splash">
+  <svg viewBox="0 0 128 128" aria-hidden="true"><circle cx="64" cy="64" r="60" fill="#EAF2DD"/><path d="M64 84C64 60 52 48 32 46c0 22 12 36 32 38z" fill="#5E9C4A"/><path d="M64 84c0-24 12-36 32-38 0 22-12 36-32 38z" fill="#7DBB5F"/><path d="M42 84h44l-5 24H47z" fill="#C8693E"/><rect x="38" y="78" width="52" height="8" rx="3" fill="#C8693E"/></svg>
+  <h1>آشیانہ</h1>
+  <div class="latin">AASHIYANA</div>
+  <div class="tag">پودے · سجاوٹ · مشاغل</div>
+  <div class="dev">Developed by SMAA</div>
+</div>
+</div>
+<script src="art.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
