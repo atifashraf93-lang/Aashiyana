@@ -27,6 +27,7 @@
     $$('.tab').forEach(function (s) { s.hidden = s.id !== 'tab-' + n; });
     $$('#nav button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === n)); });
     if (n === 'mine') renderMine();
+    if (n === 'home') renderHome();
     closeDetail();
   }
   $('#nav').addEventListener('click', function (e) { var b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
@@ -144,8 +145,38 @@
     if (r) { delete m[r.dataset.rm]; store('mine', m); renderMine(); }
   });
 
+  /* ---------- home ---------- */
+  var TIPS = [
+    ['پودے کو پانی دینے سے پہلے انگلی مٹی میں ڈال کر دیکھیں؛ اوپر کی مٹی خشک ہو تو پانی دیں۔', 'Check the soil with a finger before watering.'],
+    ['صبح سویرے پانی دینا بہترین ہے، دوپہر کی دھوپ میں نہیں۔', 'Water in the early morning, not in the midday sun.'],
+    ['چائے کی استعمال شدہ پتی خشک کر کے مٹی میں ملائیں، پودوں کے لیے اچھی کھاد ہے۔', 'Dried used tea leaves make a mild fertiliser.'],
+    ['گملے کے نیچے سوراخ ضرور ہو، ورنہ جڑیں گل جاتی ہیں۔', 'Pots need drainage holes or roots rot.'],
+    ['ہفتے میں ایک بار گملے کو گھما دیں تاکہ پودا ہر طرف سے دھوپ لے۔', 'Turn pots weekly so all sides get light.'],
+    ['چاول دھونے کا پانی ٹھنڈا ہو کر پودوں کو دے سکتے ہیں۔', 'Cooled rice-washing water can be given to plants.']
+  ];
+  var WD = ['اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ'];
+  function renderHome() {
+    var n = new Date(), m = n.getMonth(), hr = n.getHours();
+    $('#hDate').textContent = WD[n.getDay()] + '، ' + ur(n.getDate()) + ' ' + D.MONTHS[m][0] + ' ' + ur(n.getFullYear());
+    $('#h-home').textContent = hr < 12 ? 'صبح بخیر' : hr < 18 ? 'السلام علیکم' : 'شام بخیر';
+    $('#ti1').innerHTML = Art.plant('flower', '#3F7A3A', '#E04E7A').replace(/^<svg[^>]*>|<\/svg>$/g, '');
+    ['decor:frames', 'hobby:crochet', 'mine:jar'].forEach(function (x, i) {
+      $('#ti' + (i + 2)).innerHTML = Art.icons[x.split(':')[1]].replace(/^<svg[^>]*>|<\/svg>$/g, '');
+    });
+    var tip = TIPS[Math.floor(n / DAY) % TIPS.length];
+    $('#todayTip').innerHTML = '<h3>آج کا مشورہ · Tip of the day</h3><p>' + tip[0] + '</p>' + en(tip[1]);
+    var mine = store('mine') || {}, due = Object.keys(mine).filter(plantById).filter(function (id) { return mine[id].watered + plantById(id).water * DAY <= n.getTime(); });
+    $('#dueBox').innerHTML = due.length ? '<button class="due-row" data-go="mine" style="border:none;width:100%;text-align:start"><span>💧</span><span>' + ur(due.length) + ' پودوں کو پانی دینے کا وقت ہے<span class="en">' + due.length + ' plant(s) need water</span></span></button>' : '';
+    var list = D.PLANTS.filter(function (p) { return p.months.indexOf(m) > -1; }).slice(0, 8);
+    $('#homeMonth').innerHTML = '<b>اس مہینے لگائیں: ' + D.MONTHS[m][0] + '</b>' + en('Plant this month: ' + D.MONTHS[m][1]) +
+      '<div class="mchips">' + list.map(function (p) { return '<button data-plant="' + p.id + '">' + pArt(p) + '<span>' + p.ur.split(' (')[0] + '</span></button>'; }).join('') + '</div>';
+    var d = D.DIY[Math.floor(n / DAY) % D.DIY.length];
+    $('#homeDiy').innerHTML = '<button class="rcard" data-diy="' + d.id + '">' + Art.icons[d.icon] + '<span class="m"><b>' + d.ur + '</b>' + en(d.en) + '<small>خرچ: ' + d.cost + ' · وقت: ' + d.time + '</small></span></button>';
+  }
+  document.addEventListener('click', function (e) { var g = e.target.closest('[data-go]'); if (g) showTab(g.dataset.go); });
+
   /* ---------- start ---------- */
-  renderMonth(); renderFilters(); renderPlants(); renderDecor(); renderHobbies(); renderMine();
+  renderMonth(); renderFilters(); renderPlants(); renderDecor(); renderHobbies(); renderMine(); renderHome();
   setTimeout(function () { var s = $('#splash'); s.classList.add('gone'); setTimeout(function () { s.remove(); }, 700); }, 1300);
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(function () { /* offline cache unavailable */ });
 })();

@@ -58,6 +58,22 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 .idea strong { font-size:15px; font-weight:600; }
 .idea p { margin:0; font-size:14px; line-height:2.1; }
 .idea .en { margin-bottom:4px; }
+
+.hello { background:linear-gradient(135deg,#3F7A3A,#5E9C4A); color:#fff; border-radius:22px; padding:14px 18px 16px; margin-top:6px; }
+.hello small { display:block; font-size:13px; opacity:.9; line-height:2; }
+.hello b { font-size:24px; font-weight:600; line-height:1.9; display:block; }
+.hello .en { color:#E4F0D8; }
+.tiles { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+.tile { border:none; border-radius:18px; padding:10px 14px; text-align:start; display:flex; flex-direction:column; align-items:flex-start; min-height:112px; justify-content:space-between; }
+.tile svg { width:52px; height:52px; }
+.tile b { font-size:18px; font-weight:600; line-height:1.8; }
+.tile .en { color:inherit; opacity:.75; }
+.t1 { background:#DDEBCB; } .t2 { background:#F8E3D3; } .t3 { background:#F6D9E2; } .t4 { background:#D6E8F0; }
+.today { background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 16px 10px; margin-top:12px; }
+.today h3 { margin:0; font-size:15px; font-weight:600; color:var(--accent); line-height:2; }
+.today p { margin:0; font-size:15px; line-height:2.2; }
+.due-row { display:flex; align-items:center; gap:10px; background:#FBE9DC; border-radius:14px; padding:4px 14px; margin-top:12px; font-size:15px; }
+.due-row svg { width:34px; height:34px; flex:none; }
 #detail { position:absolute; inset:0; z-index:20; background:var(--bg); overflow-y:auto; padding:max(14px,env(safe-area-inset-top,0px)) 18px 28px; }
 #detail[hidden] { display:none; }
 .back { display:inline-flex; align-items:center; gap:6px; min-height:44px; background:none; border:none; font-size:15px; color:var(--muted); padding:0; }
@@ -112,7 +128,21 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 <body>
 <div id="app">
 <div id="views">
-  <section id="tab-plants" class="tab" aria-labelledby="h-plants">
+    <section id="tab-home" class="tab" aria-labelledby="h-home">
+    <div class="hello"><small id="hDate"></small><b id="h-home">السلام علیکم</b><span class="en">Welcome to your home &amp; garden guide</span></div>
+    <div id="dueBox"></div>
+    <div class="tiles">
+      <button class="tile t1" data-go="plants"><svg viewBox="0 0 120 120" id="ti1"></svg><span><b>پودے</b><span class="en">Plants</span></span></button>
+      <button class="tile t2" data-go="decor"><svg viewBox="0 0 64 64" id="ti2"></svg><span><b>سجاوٹ</b><span class="en">Home decor</span></span></button>
+      <button class="tile t3" data-go="hobby"><svg viewBox="0 0 64 64" id="ti3"></svg><span><b>مشاغل</b><span class="en">Hobbies</span></span></button>
+      <button class="tile t4" data-go="mine"><svg viewBox="0 0 64 64" id="ti4"></svg><span><b>میرا باغ</b><span class="en">My garden</span></span></button>
+    </div>
+    <div class="today" id="todayTip"></div>
+    <div class="month" id="homeMonth"></div>
+    <h2>آج کا آسان پراجیکٹ · <span class="en" style="display:inline">Today’s easy project</span></h2>
+    <div id="homeDiy"></div>
+  </section>
+  <section id="tab-plants" class="tab" aria-labelledby="h-plants" hidden>
     <h1 id="h-plants">پودے <span class="en" style="display:inline">Plants</span></h1>
     <p class="sub">گھر، بالکونی اور کچن کے لیے آسان پودے</p>
     <div class="month" id="monthBox"></div>
@@ -142,7 +172,8 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 </div>
 
 <nav id="nav" role="tablist" aria-label="ایپ کے حصے">
-  <button role="tab" data-tab="plants" aria-selected="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12C12 7 8 5 4 5c0 5 3 7 8 7zM12 14c0-4 3-6 8-6 0 5-3 6-8 6z"/></svg>پودے<span class="en">Plants</span></button>
+  <button role="tab" data-tab="home" aria-selected="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>ہوم<span class="en">Home</span></button>
+  <button role="tab" data-tab="plants" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12C12 7 8 5 4 5c0 5 3 7 8 7zM12 14c0-4 3-6 8-6 0 5-3 6-8 6z"/></svg>پودے<span class="en">Plants</span></button>
   <button role="tab" data-tab="decor" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21v-7h6v7"/></svg>سجاوٹ<span class="en">Decor</span></button>
   <button role="tab" data-tab="hobby" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>مشاغل<span class="en">Hobbies</span></button>
   <button role="tab" data-tab="mine" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 01-12 0c0-5 6-11 6-11z"/></svg>میرا باغ<span class="en">My garden</span></button>
