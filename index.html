@@ -68,7 +68,7 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 .tile svg { width:52px; height:52px; }
 .tile b { font-size:18px; font-weight:600; line-height:1.8; }
 .tile .en { color:inherit; opacity:.75; }
-.t1 { background:#DDEBCB; } .t2 { background:#F8E3D3; } .t3 { background:#F6D9E2; } .t4 { background:#D6E8F0; }
+.t5 { background:#FBE7B8; } .t6 { background:#E4DDF3; } .t1 { background:#DDEBCB; } .t2 { background:#F8E3D3; } .t3 { background:#F6D9E2; } .t4 { background:#D6E8F0; }
 .today { background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:8px 16px 10px; margin-top:12px; }
 .today h3 { margin:0; font-size:15px; font-weight:600; color:var(--accent); line-height:2; }
 .today p { margin:0; font-size:15px; line-height:2.2; }
@@ -128,6 +128,38 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 #splash .latin { font-family:var(--latin); letter-spacing:5px; color:var(--accent); font-size:20px; font-weight:700; }
 #splash .tag { color:var(--muted); font-size:15px; }
 #splash .dev { direction:ltr; font-family:var(--latin); color:var(--muted); font-size:13px; margin-top:18px; }
+
+/* photos */
+.ph { position:relative; overflow:hidden; border-radius:14px; background:var(--soft); }
+.ph svg { display:block; width:100%; height:auto; }
+.ph img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.pcard .ph { width:100%; aspect-ratio:1; max-width:none; }
+.pcard .ph svg { max-width:none; }
+.rcard .ph { width:76px; height:76px; flex:none; }
+.rcard .ph svg { width:76px; height:76px; border-radius:0; }
+.hero .ph { width:min(280px,76vw); aspect-ratio:1; margin:0 auto; }
+.hero .ph.big { aspect-ratio:4/3; width:100%; }
+.hero .ph svg { width:100%; height:100%; }
+.pcap { font-size:11px; color:var(--muted); text-align:center; direction:ltr; line-height:1.6; margin:4px 0 0; }
+.linkbtn { background:none; border:none; color:var(--accent); font-size:13px; text-decoration:underline; padding:0; }
+.stepper { display:flex; align-items:center; gap:14px; justify-content:space-between; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:6px 14px; margin-top:12px; font-size:14px; }
+.stepper button { width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--soft); font-size:22px; }
+.stepper b { font-size:20px; min-width:28px; text-align:center; }
+.list.ing li { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding:4px 0; }
+.list.ing li::before { content:none; }
+.list.ing li b { font-weight:600; text-align:end; flex:none; }
+.list.ing .en { font-size:11px; }
+.two { display:flex; gap:10px; } .two .btn { margin-top:12px; }
+.tm { display:inline-block; margin-inline-start:8px; min-height:36px; padding:0 12px; border-radius:18px; border:1px solid var(--accent); background:var(--soft); color:var(--accent); font-size:13px; }
+#ktimer { position:absolute; z-index:35; left:12px; right:12px; bottom:76px; background:var(--text); color:#fff; border-radius:16px; padding:6px 14px; display:flex; align-items:center; gap:8px; font-size:14px; }
+#ktimer[hidden] { display:none; }
+#ktimer b { font-family:var(--latin); font-size:18px; direction:ltr; }
+#ktimer button { margin-inline-start:auto; min-height:36px; border-radius:18px; border:none; padding:0 12px; background:#fff; color:var(--text); font-size:13px; }
+.pet { display:inline-block; border-radius:10px; padding:0 8px; font-size:11px; line-height:1.9; margin-top:2px; }
+.pet.safe { background:#DDF1D8; color:#2F6A32; } .pet.toxic { background:#FBE0D2; color:#9A3A1C; }
+.cityrow { margin-top:6px; }
+.cnote { font-size:13px; line-height:2; margin:2px 0 0; }
+.frost { background:#E2EEF6; border-radius:12px; padding:2px 12px; margin-top:6px; font-size:13px; }
 </style>
 </head>
 <body>
@@ -140,8 +172,11 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
       <button class="tile t1" data-go="plants"><svg viewBox="0 0 120 120" id="ti1"></svg><span><b>پودے</b><span class="en">Plants</span></span></button>
       <button class="tile t2" data-go="decor"><svg viewBox="0 0 64 64" id="ti2"></svg><span><b>سجاوٹ</b><span class="en">Home decor</span></span></button>
       <button class="tile t3" data-go="hobby"><svg viewBox="0 0 64 64" id="ti3"></svg><span><b>مشاغل</b><span class="en">Hobbies</span></span></button>
+      <button class="tile t5" data-go="kitchen"><svg viewBox="0 0 64 64" id="ti5"></svg><span><b>باورچی خانہ</b><span class="en">Kitchen &amp; recipes</span></span></button>
+      <button class="tile t6" data-go="plants" data-filter="pet"><svg viewBox="0 0 64 64" id="ti6"></svg><span><b>پالتو دوست پودے</b><span class="en">Pet-safe plants</span></span></button>
       <button class="tile t4" data-go="mine"><svg viewBox="0 0 64 64" id="ti4"></svg><span><b>میرا باغ</b><span class="en">My garden</span></span></button>
     </div>
+    <div id="homeRecipe"></div>
     <div class="today" id="todayTip"></div>
     <div class="month" id="homeMonth"></div>
     <h2>آج کا آسان پراجیکٹ · <span class="en" style="display:inline">Today’s easy project</span></h2>
@@ -170,6 +205,7 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
     <p class="sub">سیکھیں، بنائیں اور چاہیں تو کمائیں</p>
     <div id="hobbyList"></div>
   </section>
+  <section id="tab-kitchen" class="tab" aria-labelledby="h-kitchen" hidden></section>
   <section id="tab-mine" class="tab" aria-labelledby="h-mine" hidden>
     <h1 id="h-mine">میرا باغ <span class="en" style="display:inline">My garden</span></h1>
     <p class="sub">اپنے پودے شامل کریں اور پانی دینے کا حساب رکھیں</p>
@@ -180,11 +216,13 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
   </section>
 </div>
 
+<div id="ktimer" hidden></div>
 <nav id="nav" role="tablist" aria-label="ایپ کے حصے">
   <button role="tab" data-tab="home" aria-selected="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>ہوم<span class="en">Home</span></button>
   <button role="tab" data-tab="plants" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 12C12 7 8 5 4 5c0 5 3 7 8 7zM12 14c0-4 3-6 8-6 0 5-3 6-8 6z"/></svg>پودے<span class="en">Plants</span></button>
   <button role="tab" data-tab="decor" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21v-7h6v7"/></svg>سجاوٹ<span class="en">Decor</span></button>
   <button role="tab" data-tab="hobby" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>مشاغل<span class="en">Hobbies</span></button>
+  <button role="tab" data-tab="kitchen" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8a2 2 0 002 2v8M11 3v8M7 7h4M17 3c-2 2-3 5-3 8h3v10"/></svg>کچن<span class="en">Kitchen</span></button>
   <button role="tab" data-tab="mine" aria-selected="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 01-12 0c0-5 6-11 6-11z"/></svg>میرا باغ<span class="en">My garden</span></button>
 </nav>
 
@@ -200,6 +238,12 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 </div>
 <script src="art.js"></script>
 <script src="data.js"></script>
+<script src="plants2.js"></script>
+<script src="recipes1.js"></script>
+<script src="recipes2.js"></script>
+<script src="dishart.js"></script>
+<script src="photos.js"></script>
 <script src="app.js"></script>
+<script src="kitchen.js"></script>
 </body>
 </html>

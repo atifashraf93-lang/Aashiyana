@@ -21,6 +21,8 @@
 
   function plantById(id) { return D.PLANTS.filter(function (p) { return p.id === id; })[0]; }
   function pArt(p) { return Art.plant(p.kind, p.a, p.b); }
+  function phPlant(p, cap) { return '<div class="ph" data-ph="' + esc(p.photo || p.en) + '"' + (cap ? ' data-cap="1"' : '') + '>' + pArt(p) + '</div>'; }
+  function petBadge(p) { return p.pet === 'safe' ? '<span class="pet safe">🐾 پالتو کے لیے محفوظ</span>' : p.pet === 'toxic' ? '<span class="pet toxic">⚠ پالتو کے لیے نقصان دہ</span>' : ''; }
 
   /* ---------- tabs ---------- */
   function showTab(n) {
@@ -29,19 +31,29 @@
     if (n === 'mine') renderMine();
     if (n === 'home') renderHome();
     closeDetail();
+    if (n === 'kitchen' && window.AashiyanaKitchen) window.AashiyanaKitchen.render();
+    if (window.AashiyanaPhoto) window.AashiyanaPhoto.hydrate($('#tab-' + n));
   }
   $('#nav').addEventListener('click', function (e) { var b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
 
   /* ---------- plants ---------- */
-  var FILTERS = [['all', 'سب', 'All'], ['easy', 'آسان', 'Easy'], ['indoor', 'گھر کے اندر', 'Indoor'], ['balcony', 'بالکونی', 'Balcony'], ['garden', 'صحن / لان', 'Garden'], ['kitchen', 'کچن گارڈن', 'Kitchen']];
+  var FILTERS = [['all', 'سب', 'All'], ['easy', 'آسان', 'Easy'], ['indoor', 'گھر کے اندر', 'Indoor'], ['balcony', 'بالکونی', 'Balcony'], ['garden', 'صحن / لان', 'Garden'], ['kitchen', 'کچن گارڈن', 'Kitchen'], ['pet', '🐾 پالتو کے لیے محفوظ', 'Pet-safe']];
   var filt = 'all';
+  var cityId = store('city') || 'khi';
+  function cityObj() { return D.CITIES.filter(function (c) { return c.id === cityId; })[0] || D.CITIES[0]; }
+  function cityBlock() {
+    var c = cityObj(), mo = new Date().getMonth(), frostNow = c.frost && (mo === 11 || mo === 0 || mo === 1);
+    return '<div class="chips cityrow">' + D.CITIES.map(function (x) { return '<button class="chip" data-city="' + x.id + '" aria-pressed="' + (x.id === cityId) + '">' + x.ur + '<span class="en">' + x.en + '</span></button>'; }).join('') + '</div>' +
+      '<p class="cnote">' + c.note + '</p>' + en(c.noteEn) + (frostNow ? '<div class="frost">❄ ان دنوں کورا پڑ سکتا ہے؛ نازک پودے اندر رکھیں اور رات کو ڈھانپ دیں۔<span class="en">Frost possible now; bring tender plants indoors or cover them at night.</span></div>' : '');
+  }
   function renderMonth() {
     var m = new Date().getMonth();
     var list = D.PLANTS.filter(function (p) { return p.months.indexOf(m) > -1; });
-    $('#monthBox').innerHTML = '<b>اس مہینے لگائیں: ' + D.MONTHS[m][0] + '</b>' + en('Sow or plant this month: ' + D.MONTHS[m][1]) +
+    $('#monthBox').innerHTML = '<b>اس مہینے لگائیں: ' + D.MONTHS[m][0] + '</b>' + en('Sow or plant this month: ' + D.MONTHS[m][1]) + cityBlock() +
       (list.length ? '<div class="mchips">' + list.map(function (p) { return '<button data-plant="' + p.id + '">' + pArt(p) + '<span>' + p.ur.split(' (')[0] + '</span></button>'; }).join('') + '</div>' : '<p class="sub">اس مہینے کوئی خاص پودا نہیں۔</p>') +
-      '<span class="en" style="margin-top:4px">General guide for Pakistan; timing varies by city.</span>';
+      '<span class="en" style="margin-top:4px">General guide for Pakistan; timing varies by city and year.</span>';
   }
+  document.addEventListener('click', function (e) { var c = e.target.closest('[data-city]'); if (c) { cityId = c.dataset.city; store('city', cityId); renderMonth(); } });
   function renderFilters() {
     $('#plantFilters').innerHTML = FILTERS.map(function (f) { return '<button class="chip" data-f="' + f[0] + '" aria-pressed="' + (filt === f[0]) + '">' + f[1] + '<span class="en">' + f[2] + '</span></button>'; }).join('');
   }
@@ -49,12 +61,14 @@
     var q = $('#plantSearch').value.trim().toLowerCase();
     var list = D.PLANTS.filter(function (p) {
       if (filt === 'easy' && !p.easy) return false;
-      if (filt !== 'all' && filt !== 'easy' && p.where.indexOf(filt) < 0) return false;
+      if (filt === 'pet' && p.pet !== 'safe') return false;
+      if (filt !== 'all' && filt !== 'easy' && filt !== 'pet' && p.where.indexOf(filt) < 0) return false;
       return !q || p.ur.indexOf(q) > -1 || p.en.toLowerCase().indexOf(q) > -1;
     });
     $('#plantGrid').innerHTML = list.length ? list.map(function (p) {
-      return '<button class="pcard" data-plant="' + p.id + '">' + pArt(p) + '<b>' + p.ur.split(' (')[0] + '</b>' + en(p.en) + (p.easy ? '<span class="badge">آسان · Easy</span>' : '') + '</button>';
+      return '<button class="pcard" data-plant="' + p.id + '">' + phPlant(p) + '<b>' + p.ur.split(' (')[0] + '</b>' + en(p.en) + (p.easy ? '<span class="badge">آسان · Easy</span>' : '') + petBadge(p) + '</button>';
     }).join('') : '<div class="empty" style="grid-column:1/-1">کوئی پودا نہیں ملا۔ <span class="en" style="text-align:center">No plants found</span></div>';
+    if (window.AashiyanaPhoto) window.AashiyanaPhoto.hydrate($('#plantGrid'));
   }
   $('#plantSearch').addEventListener('input', renderPlants);
   $('#plantFilters').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (b) { filt = b.dataset.f; renderFilters(); renderPlants(); } });
@@ -82,7 +96,7 @@
   }
 
   /* ---------- details ---------- */
-  function openDetail(html) { var d = $('#detail'); d.innerHTML = '<button class="back" id="dBack">→ واپس <span class="en" style="display:inline">Back</span></button>' + html; d.hidden = false; d.scrollTop = 0; }
+  function openDetail(html) { var d = $('#detail'); d.innerHTML = '<button class="back" id="dBack">→ واپس <span class="en" style="display:inline">Back</span></button>' + html; d.hidden = false; d.scrollTop = 0; if (window.AashiyanaPhoto) window.AashiyanaPhoto.hydrate(d); }
   function closeDetail() { $('#detail').hidden = true; }
   function fact(label, labelEn, ur_, en_) { return '<div class="fact"><small>' + label + ' · ' + labelEn + '</small>' + ur_ + (en_ ? en(en_) : '') + '</div>'; }
 
@@ -98,9 +112,9 @@
     var p = plantById(id), mine = (store('mine') || {})[id];
     var months = p.months.map(function (m) { return D.MONTHS[m][0]; }).join('، ');
     var monthsEn = p.months.map(function (m) { return D.MONTHS[m][1].slice(0, 3); }).join(', ');
-    openDetail('<div class="hero">' + pArt(p) + '<h1>' + p.ur + '</h1>' + en(p.en) + '<div class="tags">' + p.where.map(function (w) { return '<span class="badge">' + D.WHERE[w][0] + ' · ' + D.WHERE[w][1] + '</span>'; }).join('') + '</div></div>' +
+    openDetail('<div class="hero">' + phPlant(p, true) + '<h1>' + p.ur + '</h1>' + en(p.en) + '<div class="tags">' + petBadge(p) + p.where.map(function (w) { return '<span class="badge">' + D.WHERE[w][0] + ' · ' + D.WHERE[w][1] + '</span>'; }).join('') + '</div></div>' +
       '<div class="facts">' + fact('دھوپ', 'Sunlight', p.sun, p.sunEn) + fact('پانی', 'Watering', p.waterTxt, 'About every ' + p.water + ' days') + fact('مٹی', 'Soil', p.soil) +
-      fact('کب لگائیں', 'When to plant', months, monthsEn) + fact('مفید ٹپ', 'Tip', p.tip, p.tipEn) + '</div>' +
+      fact('کب لگائیں', 'When to plant', months, monthsEn) + fact('مفید ٹپ', 'Tip', p.tip, p.tipEn) + (p.pet ? fact('پالتو جانور', 'Pets', p.pet === 'safe' ? 'عام طور پر بلی اور کتے کے لیے محفوظ مانا جاتا ہے۔' : 'بلی اور کتے کے لیے نقصان دہ مانا جاتا ہے۔', p.pet === 'safe' ? 'Generally considered non-toxic to cats and dogs (ASPCA).' : 'Considered toxic to cats and dogs (ASPCA).') : '') + '</div>' +
       (p.warn ? '<div class="warn">⚠ ' + p.warn + en(p.warnEn) + '</div>' : '') +
       '<button class="btn' + (mine ? ' ghost' : '') + '" id="addMine" data-id="' + id + '"' + (mine ? ' disabled' : '') + '>' + (mine ? 'میرے باغ میں موجود ہے ✓' : 'میرے باغ میں شامل کریں · Add to my garden') + '</button>' + shareBtn('plant', id));
   }
@@ -184,6 +198,10 @@
     ['decor:frames', 'hobby:crochet', 'mine:jar'].forEach(function (x, i) {
       $('#ti' + (i + 2)).innerHTML = Art.icons[x.split(':')[1]].replace(/^<svg[^>]*>|<\/svg>$/g, '');
     });
+    $('#ti5').innerHTML = '<circle cx="32" cy="34" r="20" fill="#F4C95D"/><circle cx="32" cy="34" r="14" fill="#fff"/><path d="M18 14v14M14 14v8a4 4 0 008 0v-8M46 14c-4 4-5 9-5 15h5v21" stroke="#8A5A1E" stroke-width="3" fill="none" stroke-linecap="round"/>';
+    $('#ti6').innerHTML = '<circle cx="20" cy="26" r="6" fill="#7C5CC4"/><circle cx="32" cy="18" r="6" fill="#7C5CC4"/><circle cx="44" cy="26" r="6" fill="#7C5CC4"/><path d="M32 30c-9 0-14 7-14 12 0 5 5 6 8 5 3-1 4-1 6-1s3 0 6 1c3 1 8 0 8-5 0-5-5-12-14-12z" fill="#7C5CC4"/>';
+    var rr = window.RECIPES || [];
+    if (rr.length) { var r0 = rr[Math.floor(n / DAY) % rr.length]; $('#homeRecipe').innerHTML = '<button class="rcard rec" data-recipe="' + r0.id + '" style="margin-top:12px"><div class="ph" data-ph="' + esc(r0.photo) + '">' + window.AashiyanaDish.svg(r0) + '</div><span class="m"><small style="color:var(--accent);font-weight:600">آج کیا پکائیں؟ · What to cook today</small><b>' + r0.ur + '</b>' + en(r0.en) + '<small>⏱ ' + ur(r0.mins) + ' منٹ · 👥 ' + ur(r0.serves) + '</small></span></button>'; }
     var tip = TIPS[Math.floor(n / DAY) % TIPS.length];
     $('#todayTip').innerHTML = '<h3>آج کا مشورہ · Tip of the day</h3><p>' + tip[0] + '</p>' + en(tip[1]);
     var mine = store('mine') || {}, due = Object.keys(mine).filter(plantById).filter(function (id) { return mine[id].watered + plantById(id).water * DAY <= n.getTime(); });
@@ -194,7 +212,7 @@
     var d = D.DIY[Math.floor(n / DAY) % D.DIY.length];
     $('#homeDiy').innerHTML = '<button class="rcard" data-diy="' + d.id + '">' + Art.icons[d.icon] + '<span class="m"><b>' + d.ur + '</b>' + en(d.en) + '<small>خرچ: ' + d.cost + ' · وقت: ' + d.time + '</small></span></button>';
   }
-  document.addEventListener('click', function (e) { var g = e.target.closest('[data-go]'); if (g) showTab(g.dataset.go); });
+  document.addEventListener('click', function (e) { var g = e.target.closest('[data-go]'); if (g) { showTab(g.dataset.go); if (g.dataset.filter) { filt = g.dataset.filter; renderFilters(); renderPlants(); if (window.AashiyanaPhoto) window.AashiyanaPhoto.hydrate($('#tab-plants')); } } });
 
   /* ---------- reminders (Android app only) ---------- */
   function nativeLN() { var C = window.Capacitor; return (C && C.isNativePlatform && C.isNativePlatform() && C.Plugins && C.Plugins.LocalNotifications) || null; }
@@ -237,6 +255,8 @@
     });
     scheduleReminders();
   }
+
+  window.AashiyanaApp = { $: $, $$: $$, ur: ur, esc: esc, en: en, store: store, toast: toast, openDetail: openDetail, closeDetail: closeDetail, nativeLN: nativeLN };
 
   /* ---------- start ---------- */
   renderMonth(); renderFilters(); renderPlants(); renderDecor(); renderHobbies(); renderMine(); renderHome(); renderPests(); setupReminders();
