@@ -58,11 +58,39 @@
       tip: 'تیز دھوپ سے پتے جل جاتے ہیں، کھڑکی سے ذرا ہٹا کر رکھیں۔', tipEn: 'Harsh sun scorches the leaves; keep it away from the window.', warn: '', warnEn: '' },
     { id: 'cactus', ur: 'کیکٹس (ناگ پھنی)', en: 'Cactus', kind: 'cactus', a: '#4E8F5A', b: '#E26E8D', where: ['indoor', 'balcony'], easy: true, water: 14,
       sun: 'تیز دھوپ', sunEn: 'Bright direct sun', waterTxt: 'مہینے میں ایک دو بار، سردیوں میں تقریباً نہیں', soil: 'ریت ملی کیکٹس والی مٹی', months: [2, 3, 4, 5, 6, 7, 8],
-      tip: 'پانی بہت کم دیں؛ یہ زیادہ پانی سے مرتا ہے، کم پانی سے نہیں۔', tipEn: 'It dies from too much water, not too little.', warn: 'کانٹوں سے بچوں کو دور رکھیں۔', warnEn: 'Keep spines away from children.' }
+      tip: 'پانی بہت کم دیں؛ یہ زیادہ پانی سے مرتا ہے، کم پانی سے نہیں۔', tipEn: 'It dies from too much water, not too little.', warn: 'کانٹوں سے بچوں کو دور رکھیں۔', warnEn: 'Keep spines away from children.' },
+    { id: 'curry', ur: 'کڑی پتہ', en: 'Curry Leaf', kind: 'leafy', a: '#2F7A3A', b: '#4E9A4A', where: ['balcony', 'garden', 'kitchen'], easy: true, water: 3,
+      sun: 'پوری دھوپ', sunEn: 'Full sun', waterTxt: 'ہر ۳ دن بعد، سردیوں میں کم', soil: 'اچھی نکاسی والی مٹی', months: [1, 2, 3, 7, 8],
+      tip: 'بڑے گملے میں لگائیں؛ پتے توڑتے رہیں تو پودا گھنا ہوتا ہے۔', tipEn: 'Use a large pot; regular picking keeps it bushy.', warn: '', warnEn: '' },
+    { id: 'onion', ur: 'ہری پیاز', en: 'Spring Onion', kind: 'spiky', a: '#5FAE4A', b: '#86CC6B', where: ['balcony', 'kitchen'], easy: true, water: 2,
+      sun: 'ہلکی سے تیز دھوپ', sunEn: 'Light to full sun', waterTxt: 'ہر دو دن بعد', soil: 'ڈھیلی مٹی', months: [8, 9, 10, 1, 2],
+      tip: 'بازار کی ہری پیاز کی جڑ والا حصہ پانی یا مٹی میں لگائیں، دوبارہ اگ آئے گی۔', tipEn: 'Replant the root end of shop-bought spring onions; they regrow.', warn: '', warnEn: '' },
+    { id: 'okra', ur: 'بھنڈی', en: 'Okra (Lady Finger)', kind: 'fruit', a: '#4E8F46', b: '#6FA84A', where: ['balcony', 'garden', 'kitchen'], easy: false, water: 2,
+      sun: 'پوری دھوپ، گرم موسم', sunEn: 'Full sun, warm weather', waterTxt: 'ہر دو دن بعد', soil: 'گہری زرخیز مٹی', months: [1, 2, 5, 6],
+      tip: 'بیج رات بھر بھگو کر بوئیں؛ پھل چھوٹے ہوں تو ہی توڑ لیں۔', tipEn: 'Soak seeds overnight; harvest pods while small.', warn: '', warnEn: '' },
+    { id: 'periwinkle', ur: 'سدا بہار', en: 'Periwinkle', kind: 'flower', a: '#3F7A3A', b: '#E06AA0', where: ['garden', 'balcony'], easy: true, water: 3,
+      sun: 'دھوپ والی جگہ', sunEn: 'Sunny spot', waterTxt: 'ہر ۳ دن بعد، گرمی میں بھی پھول دیتا ہے', soil: 'عام مٹی', months: [1, 2, 3, 7, 8],
+      tip: 'بہت کم دیکھ بھال میں سال بھر پھول دیتا ہے۔', tipEn: 'Blooms almost all year with little care.', warn: 'کھانے کے لیے نہیں؛ بچوں اور جانوروں سے دور رکھیں۔', warnEn: 'Not edible; keep from children and pets.' },
+    { id: 'peace', ur: 'پیس للی', en: 'Peace Lily', kind: 'leafy', a: '#2F6F3A', b: '#F4F1E6', where: ['indoor'], easy: true, water: 5,
+      sun: 'کم روشنی چل جاتی ہے', sunEn: 'Low to medium light', waterTxt: 'ہر ۵ دن بعد؛ پتے جھکیں تو پانی مانگ رہا ہے', soil: 'نم رکھنے والی ہلکی مٹی', months: [2, 3, 4, 5, 6, 7, 8],
+      tip: 'سفید پھول کے لیے ہلکی روشنی دیں اور پتوں کی گرد صاف کرتے رہیں۔', tipEn: 'Give gentle light for white blooms and wipe dust off leaves.', warn: 'پتے بچوں اور پالتو جانوروں کے لیے نقصان دہ ہیں۔', warnEn: 'Toxic to children and pets.' },
+    { id: 'ginger', ur: 'ادرک', en: 'Ginger', kind: 'aloe', a: '#5FAE4A', b: '#86CC6B', where: ['balcony', 'kitchen'], easy: false, water: 3,
+      sun: 'ہلکی دھوپ / آدھا سایہ', sunEn: 'Partial shade', waterTxt: 'مٹی نم رکھیں، ہر ۳ دن بعد', soil: 'ڈھیلی، ہوا دار، کھاد ملی مٹی', months: [2, 3, 4],
+      tip: 'کھلی آنکھوں والی تازہ ادرک کا ٹکڑا لگائیں؛ تیار ہونے میں ۸ سے ۱۰ مہینے لگتے ہیں۔', tipEn: 'Plant a piece with visible buds; takes 8–10 months to mature.', warn: '', warnEn: '' }
   ];
 
   var MONTHS = [['جنوری', 'January'], ['فروری', 'February'], ['مارچ', 'March'], ['اپریل', 'April'], ['مئی', 'May'], ['جون', 'June'],
     ['جولائی', 'July'], ['اگست', 'August'], ['ستمبر', 'September'], ['اکتوبر', 'October'], ['نومبر', 'November'], ['دسمبر', 'December']];
+
+  var PESTS = [
+    { ur: 'پتے پیلے ہو جانا', en: 'Yellow leaves', cause: 'عموماً زیادہ پانی یا نکاسی کی خرابی', causeEn: 'Usually overwatering or poor drainage', fix: 'پانی کم کریں، گملے کے سوراخ چیک کریں، مٹی خشک ہونے دیں۔', fixEn: 'Water less, check drainage holes, let soil dry.' },
+    { ur: 'پتوں کے کنارے بھورے ہونا', en: 'Brown leaf tips', cause: 'کم نمی، زیادہ دھوپ یا پانی کی کمی', causeEn: 'Dry air, too much sun, or underwatering', fix: 'پودے کو ہلکی روشنی میں رکھیں اور باقاعدگی سے پانی دیں۔', fixEn: 'Move to gentler light and water regularly.' },
+    { ur: 'چھوٹے سبز یا کالے کیڑے (افڈز)', en: 'Aphids', cause: 'نرم نئی کونپلوں پر رس چوسنے والے کیڑے', causeEn: 'Sap-sucking insects on soft new growth', fix: 'پانی کی دھار سے دھوئیں، پھر ہلکے صابن والا پانی یا نیم کا تیل چھڑکیں۔', fixEn: 'Rinse with water, then spray mild soapy water or neem oil.' },
+    { ur: 'سفید مکھی', en: 'Whitefly', cause: 'پتوں کے نیچے چھوٹی سفید مکھیاں', causeEn: 'Tiny white flies under leaves', fix: 'نیم کے تیل کا سپرے ہر ۵ دن بعد، اور پیلے چپکنے والے کارڈ لگائیں۔', fixEn: 'Neem oil every 5 days and yellow sticky cards.' },
+    { ur: 'پتوں پر سفید پاؤڈر', en: 'Powdery mildew', cause: 'پھپھوندی، زیادہ نمی اور ہوا کی کمی', causeEn: 'Fungus from humidity and poor airflow', fix: 'متاثرہ پتے کاٹیں، پودوں میں فاصلہ رکھیں، نیم کا تیل یا ۱ حصہ دودھ ۹ حصے پانی میں ملا کر چھڑکیں۔', fixEn: 'Remove affected leaves, space plants, spray neem oil or 1:9 milk and water.' },
+    { ur: 'جڑ گلنا', en: 'Root rot', cause: 'پانی رکا رہنا', causeEn: 'Waterlogged soil', fix: 'پودا نکالیں، گلی جڑیں کاٹیں اور نئی خشک مٹی میں لگائیں۔', fixEn: 'Take the plant out, cut rotten roots and repot in fresh dry soil.' },
+    { ur: 'مٹی میں چھوٹے مچھر', en: 'Fungus gnats', cause: 'ہمیشہ گیلی مٹی', causeEn: 'Constantly wet soil', fix: 'اوپر کی مٹی خشک ہونے دیں اور پانی کا وقفہ بڑھائیں۔', fixEn: 'Let the top soil dry and water less often.' }
+  ];
 
   var WHERE = { indoor: ['گھر کے اندر', 'Indoor'], balcony: ['بالکونی', 'Balcony'], garden: ['صحن / لان', 'Garden'], kitchen: ['کچن گارڈن', 'Kitchen garden'] };
 
@@ -161,6 +189,6 @@
       steps: [['ایک ہنر چنیں: کیک، کڑھائی، پودے یا سلائی۔', 'Choose one skill: cakes, embroidery, plants or stitching.'], ['لاگت کا حساب لگا کر ۳۰ سے ۵۰ فیصد منافع رکھیں۔', 'Calculate cost and add a 30–50% margin.'], ['صاف تصویریں کھینچ کر واٹس ایپ اور فیس بک پر لگائیں۔', 'Photograph neatly and post on WhatsApp and Facebook.'], ['پہلے جاننے والوں سے آرڈر لیں، پھر آہستہ آہستہ بڑھائیں۔', 'Start with people you know, then grow.']], earn: 'پودوں کی نرسری گھر کے صحن میں بھی چل سکتی ہے۔', earnEn: 'A small plant nursery can even run from your courtyard.' }
   ];
 
-  root.AashiyanaData = { PLANTS: PLANTS, MONTHS: MONTHS, WHERE: WHERE, ROOMS: ROOMS, DIY: DIY, HOBBIES: HOBBIES };
+  root.AashiyanaData = { PLANTS: PLANTS, PESTS: PESTS, MONTHS: MONTHS, WHERE: WHERE, ROOMS: ROOMS, DIY: DIY, HOBBIES: HOBBIES };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.AashiyanaData;
 })(typeof self !== 'undefined' ? self : this);

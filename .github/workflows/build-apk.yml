@@ -36,6 +36,10 @@ jobs:
       - name: Add Android platform
         run: npx cap add android
 
+      - name: Permissions (notifications)
+        run: |
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />\n    <uses-permission android:name="android.permission.VIBRATE" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
+
       - name: App icons
         run: |
           RES=android/app/src/main/res

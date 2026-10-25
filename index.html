@@ -108,6 +108,11 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
 .due.ok { color:var(--accent); }
 .gcard button { min-height:44px; padding:0 12px; border-radius:12px; border:none; background:var(--accent); color:#fff; font-size:14px; }
 .gcard .rm { background:none; color:var(--muted); border:1px solid var(--line); padding:0 10px; }
+.pest { background:var(--surface); border:1px solid var(--line); border-radius:14px; margin-top:8px; padding:0 14px; }
+.pest summary { min-height:48px; display:flex; align-items:center; font-size:15px; font-weight:600; cursor:pointer; }
+.pest p { margin:0 0 4px; font-size:14px; line-height:2.1; }
+.pest .fix { background:var(--soft); border-radius:10px; padding:2px 10px; margin:4px 0 10px; }
+.btn.share { background:var(--surface); color:var(--accent); border:1px solid var(--accent); }
 .empty { text-align:center; color:var(--muted); padding:28px 0; font-size:15px; }
 .hint { font-size:13px; color:var(--muted); text-align:center; margin:10px 0 0; line-height:2.1; }
 #nav { display:flex; flex:none; background:var(--surface); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
@@ -149,6 +154,8 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
     <div class="search"><input id="plantSearch" type="search" placeholder="پودا تلاش کریں  Search plants" autocomplete="off"></div>
     <div class="chips" id="plantFilters"></div>
     <div class="grid" id="plantGrid"></div>
+    <h2>پودوں کے مسائل اور حل · <span class="en" style="display:inline">Plant problems</span></h2>
+    <div id="pestList"></div>
   </section>
   <section id="tab-decor" class="tab" aria-labelledby="h-decor" hidden>
     <h1 id="h-decor">گھر کی سجاوٹ <span class="en" style="display:inline">Home decor</span></h1>
@@ -166,6 +173,8 @@ h2 { font-size:18px; font-weight:600; line-height:2; margin:14px 0 6px; }
   <section id="tab-mine" class="tab" aria-labelledby="h-mine" hidden>
     <h1 id="h-mine">میرا باغ <span class="en" style="display:inline">My garden</span></h1>
     <p class="sub">اپنے پودے شامل کریں اور پانی دینے کا حساب رکھیں</p>
+    <div class="seg" id="remRow" hidden style="display:none"></div>
+    <div class="gcard" id="remCard" hidden style="display:none"><div class="m"><b>یاد دہانیاں</b><span class="en">Reminders: watering and monthly planting</span></div><button id="remBtn" aria-pressed="false">بند</button></div>
     <div id="mineList"></div>
     <p class="hint">یہ ریکارڈ صرف آپ کے فون میں رہتا ہے۔</p>
   </section>

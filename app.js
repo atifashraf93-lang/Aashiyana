@@ -59,6 +59,12 @@
   $('#plantSearch').addEventListener('input', renderPlants);
   $('#plantFilters').addEventListener('click', function (e) { var b = e.target.closest('[data-f]'); if (b) { filt = b.dataset.f; renderFilters(); renderPlants(); } });
 
+  function renderPests() {
+    $('#pestList').innerHTML = D.PESTS.map(function (x) {
+      return '<details class="pest"><summary>' + x.ur + '&nbsp;<span class="en" style="display:inline">· ' + x.en + '</span></summary><p><b>وجہ:</b> ' + x.cause + en(x.causeEn) + '</p><div class="fix"><p><b>حل:</b> ' + x.fix + en(x.fixEn) + '</p></div></details>';
+    }).join('');
+  }
+
   /* ---------- decor ---------- */
   function renderDecor() {
     $('#roomList').innerHTML = D.ROOMS.map(function (r) {
@@ -80,6 +86,14 @@
   function closeDetail() { $('#detail').hidden = true; }
   function fact(label, labelEn, ur_, en_) { return '<div class="fact"><small>' + label + ' · ' + labelEn + '</small>' + ur_ + (en_ ? en(en_) : '') + '</div>'; }
 
+  function shareBtn(kind, id) { return '<button class="btn share" data-share="' + kind + ':' + id + '">واٹس ایپ وغیرہ پر شیئر کریں · Share</button>'; }
+  function shareText(kind, id) {
+    var t;
+    if (kind === 'plant') { var p = plantById(id); t = '🌿 ' + p.ur + ' (' + p.en + ')\nدھوپ: ' + p.sun + '\nپانی: ' + p.waterTxt + '\nٹپ: ' + p.tip; }
+    else if (kind === 'diy') { var d = D.DIY.filter(function (x) { return x.id === id; })[0]; t = '🛠 ' + d.ur + ' (' + d.en + ')\nخرچ: ' + d.cost + ' · وقت: ' + d.time + '\n' + d.steps.map(function (s, i) { return ur(i + 1) + '۔ ' + s[0]; }).join('\n'); }
+    else { var h = D.HOBBIES.filter(function (x) { return x.id === id; })[0]; t = '✨ ' + h.ur + ' (' + h.en + ')\n' + h.about + '\n' + h.steps.map(function (s, i) { return ur(i + 1) + '۔ ' + s[0]; }).join('\n'); }
+    return t + '\n\n— آشیانہ | Aashiyana';
+  }
   function plantDetail(id) {
     var p = plantById(id), mine = (store('mine') || {})[id];
     var months = p.months.map(function (m) { return D.MONTHS[m][0]; }).join('، ');
@@ -88,7 +102,7 @@
       '<div class="facts">' + fact('دھوپ', 'Sunlight', p.sun, p.sunEn) + fact('پانی', 'Watering', p.waterTxt, 'About every ' + p.water + ' days') + fact('مٹی', 'Soil', p.soil) +
       fact('کب لگائیں', 'When to plant', months, monthsEn) + fact('مفید ٹپ', 'Tip', p.tip, p.tipEn) + '</div>' +
       (p.warn ? '<div class="warn">⚠ ' + p.warn + en(p.warnEn) + '</div>' : '') +
-      '<button class="btn' + (mine ? ' ghost' : '') + '" id="addMine" data-id="' + id + '"' + (mine ? ' disabled' : '') + '>' + (mine ? 'میرے باغ میں موجود ہے ✓' : 'میرے باغ میں شامل کریں · Add to my garden') + '</button>');
+      '<button class="btn' + (mine ? ' ghost' : '') + '" id="addMine" data-id="' + id + '"' + (mine ? ' disabled' : '') + '>' + (mine ? 'میرے باغ میں موجود ہے ✓' : 'میرے باغ میں شامل کریں · Add to my garden') + '</button>' + shareBtn('plant', id));
   }
   function diyDetail(id) {
     var d = D.DIY.filter(function (x) { return x.id === id; })[0], prog = store('diy.' + id) || [];
@@ -97,7 +111,7 @@
       '<h2>طریقہ · Steps</h2><div class="facts"><ol class="steps">' + d.steps.map(function (s, i) {
         var on = prog.indexOf(i) > -1;
         return '<li class="' + (on ? 'done' : '') + '"><input type="checkbox" data-step="' + i + '" data-id="' + id + '"' + (on ? ' checked' : '') + ' aria-label="مکمل"><p>' + ur(i + 1) + '۔ ' + s[0] + en(s[1]) + '</p></li>';
-      }).join('') + '</ol></div>');
+      }).join('') + '</ol></div>' + shareBtn('diy', id));
   }
   function hobbyDetail(id) {
     var h = D.HOBBIES.filter(function (x) { return x.id === id; })[0];
@@ -106,7 +120,7 @@
       '<h2>ضرورت کی چیزیں · Materials</h2><div class="facts"><ul class="list">' + h.need.map(function (n, i) { return '<li>' + n + en(h.needEn[i]) + '</li>'; }).join('') + '</ul></div>' +
       '<h2>شروع کیسے کریں · Getting started</h2><div class="facts"><ol class="steps">' + h.steps.map(function (s, i) { return '<li><p>' + ur(i + 1) + '۔ ' + s[0] + en(s[1]) + '</p></li>'; }).join('') + '</ol></div>' +
       (h.safety ? '<div class="warn">⚠ ' + h.safety + en(h.safetyEn) + '</div>' : '') +
-      '<div class="facts" style="margin-top:12px">' + fact('کمائی کا موقع', 'Earning idea', h.earn, h.earnEn) + '</div>');
+      '<div class="facts" style="margin-top:12px">' + fact('کمائی کا موقع', 'Earning idea', h.earn, h.earnEn) + '</div>' + shareBtn('hobby', id));
   }
 
   document.addEventListener('click', function (e) {
@@ -115,9 +129,16 @@
     if ((t = e.target.closest('[data-diy]'))) return diyDetail(t.dataset.diy);
     if ((t = e.target.closest('[data-hobby]'))) return hobbyDetail(t.dataset.hobby);
     if (e.target.closest('#dBack')) return closeDetail();
+    if ((t = e.target.closest('[data-share]'))) {
+      var sp = t.dataset.share.split(':'), txt = shareText(sp[0], sp[1]);
+      if (navigator.share) { navigator.share({ text: txt }).catch(function () { /* cancelled */ }); }
+      else if (navigator.clipboard) { navigator.clipboard.writeText(txt).then(function () { toast('کاپی ہو گیا'); }); }
+      else toast('شیئر کی سہولت دستیاب نہیں');
+      return;
+    }
     if ((t = e.target.closest('#addMine'))) {
       var m = store('mine') || {}; m[t.dataset.id] = { added: Date.now(), watered: Date.now() }; store('mine', m);
-      toast('میرے باغ میں شامل ہو گیا'); return plantDetail(t.dataset.id);
+      scheduleReminders(); toast('میرے باغ میں شامل ہو گیا'); return plantDetail(t.dataset.id);
     }
   });
   document.addEventListener('change', function (e) {
@@ -141,8 +162,8 @@
   }
   $('#mineList').addEventListener('click', function (e) {
     var w = e.target.closest('[data-water]'), r = e.target.closest('[data-rm]'), m = store('mine') || {};
-    if (w) { m[w.dataset.water].watered = Date.now(); store('mine', m); toast('پانی کا ریکارڈ درج ہو گیا'); renderMine(); }
-    if (r) { delete m[r.dataset.rm]; store('mine', m); renderMine(); }
+    if (w) { m[w.dataset.water].watered = Date.now(); store('mine', m); toast('پانی کا ریکارڈ درج ہو گیا'); renderMine(); scheduleReminders(); }
+    if (r) { delete m[r.dataset.rm]; store('mine', m); renderMine(); scheduleReminders(); }
   });
 
   /* ---------- home ---------- */
@@ -175,8 +196,50 @@
   }
   document.addEventListener('click', function (e) { var g = e.target.closest('[data-go]'); if (g) showTab(g.dataset.go); });
 
+  /* ---------- reminders (Android app only) ---------- */
+  function nativeLN() { var C = window.Capacitor; return (C && C.isNativePlatform && C.isNativePlatform() && C.Plugins && C.Plugins.LocalNotifications) || null; }
+  function scheduleReminders() {
+    var LN = nativeLN();
+    if (!LN || !store('rem')) return Promise.resolve();
+    var m = store('mine') || {}, list = [], now = Date.now(), i = 0;
+    Object.keys(m).filter(plantById).forEach(function (id) {
+      var p = plantById(id), due = new Date(m[id].watered + p.water * DAY);
+      due.setHours(8, 0, 0, 0);
+      if (due.getTime() <= now) { due = new Date(now + DAY); due.setHours(8, 0, 0, 0); }
+      list.push({ id: 100 + (i++), title: 'پانی دینے کا وقت', body: p.ur.split(' (')[0] + ' کو پانی دیں', schedule: { at: due, allowWhileIdle: true } });
+    });
+    var n = new Date();
+    for (var k = 1; k <= 6; k++) {
+      var d = new Date(n.getFullYear(), n.getMonth() + k, 1, 9, 0, 0), mo = d.getMonth();
+      var names = D.PLANTS.filter(function (p) { return p.months.indexOf(mo) > -1; }).slice(0, 4).map(function (p) { return p.ur.split(' (')[0]; }).join('، ');
+      list.push({ id: 300 + k, title: 'اس مہینے کیا لگائیں؟', body: D.MONTHS[mo][0] + ': ' + names, schedule: { at: d, allowWhileIdle: true } });
+    }
+    return LN.getPending().then(function (p) {
+      return p.notifications.length ? LN.cancel({ notifications: p.notifications.map(function (x) { return { id: x.id }; }) }) : null;
+    }).then(function () { return LN.schedule({ notifications: list }); }).catch(function () { /* reminders unavailable */ });
+  }
+  function setupReminders() {
+    var LN = nativeLN(); if (!LN) return;
+    var card = $('#remCard'); card.hidden = false; card.style.display = '';
+    var btn = $('#remBtn');
+    function paint() { var on = !!store('rem'); btn.setAttribute('aria-pressed', String(on)); btn.textContent = on ? 'چالو' : 'بند'; }
+    paint();
+    btn.addEventListener('click', function () {
+      if (store('rem')) {
+        store('rem', false); paint(); toast('یاد دہانیاں بند');
+        LN.getPending().then(function (p) { return p.notifications.length ? LN.cancel({ notifications: p.notifications.map(function (x) { return { id: x.id }; }) }) : null; }).catch(function () { /* ignore */ });
+        return;
+      }
+      LN.requestPermissions().then(function (r) {
+        if (r && r.display === 'granted') { store('rem', true); paint(); scheduleReminders(); toast('یاد دہانیاں چالو ہو گئیں'); }
+        else toast('نوٹیفکیشن کی اجازت نہیں ملی');
+      }).catch(function () { toast('یاد دہانی چالو نہیں ہو سکی'); });
+    });
+    scheduleReminders();
+  }
+
   /* ---------- start ---------- */
-  renderMonth(); renderFilters(); renderPlants(); renderDecor(); renderHobbies(); renderMine(); renderHome();
+  renderMonth(); renderFilters(); renderPlants(); renderDecor(); renderHobbies(); renderMine(); renderHome(); renderPests(); setupReminders();
   setTimeout(function () { var s = $('#splash'); s.classList.add('gone'); setTimeout(function () { s.remove(); }, 700); }, 1300);
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(function () { /* offline cache unavailable */ });
 })();
