@@ -1,6 +1,6 @@
 /* Aashiyana service worker: caches the app so it opens offline. */
-var VERSION = 'aashiyana-v3';
-var SHELL = ['./', 'index.html', 'art.js', 'data.js', 'plants2.js', 'recipes1.js', 'recipes2.js', 'dishart.js', 'photos.js', 'app.js', 'kitchen.js', 'manifest.webmanifest', 'icon.svg'];
+var VERSION = 'aashiyana-v4';
+var SHELL = ['./', 'index.html', 'art.js', 'data.js', 'plants2.js', 'recipes1.js', 'recipes2.js', 'dishart.js', 'photos.js', 'remote.js', 'app.js', 'kitchen.js', 'manifest.webmanifest', 'icon.svg'];
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); })); });
 self.addEventListener('activate', function (e) { e.waitUntil(caches.keys().then(function (k) { return Promise.all(k.filter(function (x) { return x !== VERSION; }).map(function (x) { return caches.delete(x); })); }).then(function () { return self.clients.claim(); })); });
 self.addEventListener('fetch', function (e) {
